@@ -192,12 +192,12 @@
                         <td><?=$row['PNama']?></td>
                         <td>
                             <a href="create.php?page=ubah&id=<?=md5($row['Nrp'])?>" class="btn btn-success mb-1">Edit</a>
-                            <a href="#" class="btn btn-danger mb-1" href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal">Delete</a>
+                            <a href="#" class="btn btn-danger mb-1" href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal<?=md5($row['Nrp'])?>">Delete</a>
                         </td>
                       </tr>
 
                     <!-- Modal Delete -->
-                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+                    <div class="modal fade" id="deleteModal<?=md5($row['Nrp'])?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDelete"
                         aria-hidden="true">
                         <div class="modal-dialog" role="document">
                         <div class="modal-content">

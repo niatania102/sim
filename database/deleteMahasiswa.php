@@ -10,7 +10,7 @@ while($row=$res->fetch_assoc()) {
         $stmt = $conn->prepare("DELETE FROM mahasiswa WHERE Nrp=?");
         $stmt->bind_param('s', $row['Nrp']);
         $stmt->execute();
-        header('../mahasiswa/index.php');
+        header('location: ../mahasiswa/index.php');
     }
 }
 ?>
