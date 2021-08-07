@@ -169,11 +169,11 @@ $idProdiResult = 0;
                     $stmt->execute();
                     $res = $stmt->get_result();
                     while($row=$res->fetch_assoc()) {
-                        if(md5($row['Nrp'])==$nrp){
+                        if(md5($row['Nrp'])==$nrp){ //check if NRP exists
                             $nrpResult = $row['Nrp'];
                             $thnTerimaResult = $row['ThnTerima'];
                             $namaResult = $row['Nama'];
-                            $tglLahirResult = date("d/m/Y",$row['TglLahir']);
+                            $tglLahirResult = $row['TglLahir'];
                             $emailResult = $row['Email'];
                             $ipkResult = $row['Ipk'];
                             $idProdiResult = $row['IdProdi'];
@@ -193,7 +193,7 @@ $idProdiResult = 0;
                         <div class="form-group">
                         <label for="exampleInputThnTerima1">Tahun Terima</label>
                         <input type="text" class="form-control" id="thnTerima" name="thnTerima" required="required" aria-describedby="thnTerimaHelp"
-                            placeholder="Masukkan Tahun Terima Mahasiswa"
+                            placeholder="Masukkan Tahun Terima Mahasiswa" <?php if($thnTerimaResult!="") echo 'value="'.$thnTerimaResult.'"';?> >
                         <small id="thnTerimaHelp" class="form-text text-muted">Tahun Terima Mahasiswa.</small>
                         </div>
                         <div class="form-group">
