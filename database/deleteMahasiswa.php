@@ -22,10 +22,10 @@ while($row=$res->fetch_assoc()) {
         // $stmt->execute();
 
         //work but ain't so pretty
-        // echo "<script>
-        // alert('Data berhasil dihapus');
-        // window.location.href='../mahasiswa/index.php';
-        // </script>";
+        echo "<script>
+        alert('Data berhasil dihapus');
+        window.location.href='../mahasiswa/index.php';
+        </script>";
 
         //did work but somehow can't go to index page
         // echo '<script>
@@ -42,18 +42,18 @@ while($row=$res->fetch_assoc()) {
         // </script>';
 
 
-        echo '<script>
-        $(document).ready(function() {
-            swal({
-              title: "Success",
-               text: "Data telah dihapus",
-                type: "success"
-              },
-              function(){
-                window.location.href = "coba.php";
-            });
-            });
-        </script>';
+        // echo '<script>
+        // $(document).ready(function() {
+        //     swal({
+        //       title: "Success",
+        //        text: "Data telah dihapus",
+        //         type: "success"
+        //       },
+        //       function(){
+        //         window.location.href = "coba.php";
+        //     });
+        //     });
+        // </script>';
 
         // header('location: ../mahasiswa/index.php');
     }
