@@ -1,3 +1,18 @@
+<?php
+$page = $_GET['page'];
+$nrp = $_GET['id'];
+
+include "../database/config.php";
+
+$namaResult = "";
+$nrpResult = "";
+$thnTerimaResult = "";
+$tglLahirResult = "";
+$emailResult = "";
+$ipkResult = 0.001;
+$idProdiResult = 0;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,18 +23,19 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link href="" rel="icon">
-  <title>Uji Program SIM - Data Mahasiswa</title>
+  <title>Uji Program SIM - <?=ucfirst($page)?> Data Mahasiswa</title>
   <link href="../template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="../template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../template/css/ruang-admin.min.css" rel="stylesheet">
-  <link href="../template/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <!-- Bootstrap DatePicker -->
+  <link href="../template/vendor/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" >
 </head>
 
 <body id="page-top">
   <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
           <img src="">
         </div>
@@ -27,7 +43,7 @@
       </a>
       <hr class="sidebar-divider my-0">
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="index.html">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
@@ -128,105 +144,117 @@
           </ul>
         </nav>
         <!-- Topbar -->
+
         <!-- Container Fluid-->
         <div class="container-fluid" id="container-wrapper">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Mahasiswa</h1>
+            <h1 class="h3 mb-0 text-gray-800"><?=ucfirst($page)?> Data Mahasiswa</h1>
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="./">Home</a></li>
-              <li class="breadcrumb-item">Tables</li>
-              <li class="breadcrumb-item active" aria-current="page">Mahasiswa</li>
+              <li class="breadcrumb-item">Forms</li>
+              <li class="breadcrumb-item active" aria-current="page">Form Basics</li>
             </ol>
           </div>
 
-          <!-- Row -->
-          <div class="row">
-            <!-- DataTable with Hover -->
-            <div class="col-lg-12">
+          <div class="">
+            <div class="">
+              <!-- Form Basic -->
               <div class="card mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Data Mahasiswa</h6>
-                  <a href="create.php?page=tambah"><button class="btn btn-primary mb-1">Tambah Data Mahasiswa</button></a>
+                  <h6 class="m-0 font-weight-bold text-primary"><?=ucfirst($page)?> Data Mahasiswa</h6>
                 </div>
-                <div class="table-responsive p-3">
-                  <table class="table align-items-center table-flush table-hover" id="dataTableHover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>NRP</th>
-                        <th>Tahun Terima</th>
-                        <th>Nama</th>
-                        <th>Tgl Lahir</th>
-                        <th>Email</th>
-                        <th>IPK</th>
-                        <th>Prodi</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>NRP</th>
-                        <th>Tahun Terima</th>
-                        <th>Nama</th>
-                        <th>Tgl Lahir</th>
-                        <th>Email</th>
-                        <th>IPK</th>
-                        <th>Prodi</th>
-                        <th>Action</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                    <?php
-                    include "../database/config.php";
-                    $stmt = $conn->prepare("SELECT m.*, p.Nama as PNama FROM mahasiswa as m INNER JOIN prodi as p ON p.IdProdi = m.IdProdi");
+                <div class="card-body">
+                <?php
+                    $stmt = $conn->prepare("SELECT * FROM mahasiswa");
                     $stmt->execute();
                     $res = $stmt->get_result();
                     while($row=$res->fetch_assoc()) {
-                    ?>
-                      <tr>
-                        <td><?=$row['Nrp']?></td>
-                        <td><?=$row['ThnTerima']?></td>
-                        <td><?=$row['Nama']?></td>
-                        <td><?=$row['TglLahir']?></td>
-                        <td><?=$row['Email']?></td>
-                        <td><?=$row['Ipk']?></td>
-                        <td><?=$row['PNama']?></td>
-                        <td>
-                            <a href="create.php?page=ubah&id=<?=md5($row['Nrp'])?>" class="btn btn-success mb-1">Edit</a>
-                            <a href="#" class="btn btn-danger mb-1" href="javascript:void(0);" data-toggle="modal" data-target="#deleteModal">Delete</a>
-                        </td>
-                      </tr>
-
-                    <!-- Modal Delete -->
-                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                            <p>Apakah kamu yakin untuk menghapus data mahasiswa NRP: <?=$row['Nrp']?> ?</p>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                            <a href="../database/deleteMahasiswa.php?id=<?=md5($row['Nrp'])?>" class="btn btn-danger">Delete</a>
+                        if(md5($row['Nrp'])==$nrp){
+                            $nrpResult = $row['Nrp'];
+                            $thnTerimaResult = $row['ThnTerima'];
+                            $namaResult = $row['Nama'];
+                            $tglLahirResult = date("d/m/Y",$row['TglLahir']);
+                            $emailResult = $row['Email'];
+                            $ipkResult = $row['Ipk'];
+                            $idProdiResult = $row['IdProdi'];
+                            break;
+                        }
+                    }
+                ?>
+                    <form role="form" method="post" action="../database/updateInsertMahasiswa.php?page=<?=$page?>">
+                    <?php if($page!="tambah"){?>
+                        <div class="form-group">
+                        <label for="exampleInputNrp1">NRP</label>
+                        <input type="text" disabled class="form-control" id="nrp" name="nrp" aria-describedby="nrpHelp" required="required"
+                        <?php if($nrpResult!="") echo 'value="'.$nrpResult.'"';?>>
+                        <small id="nrpHelp" class="form-text text-muted">NRP Mahasiswa.</small>
+                        </div>
+                    <?php }?>
+                        <div class="form-group">
+                        <label for="exampleInputThnTerima1">Tahun Terima</label>
+                        <input type="text" class="form-control" id="thnTerima" name="thnTerima" required="required" aria-describedby="thnTerimaHelp"
+                            placeholder="Masukkan Tahun Terima Mahasiswa"
+                        <small id="thnTerimaHelp" class="form-text text-muted">Tahun Terima Mahasiswa.</small>
+                        </div>
+                        <div class="form-group">
+                        <label for="exampleInputNama1">Nama Mahasiswa</label>
+                        <input type="text" class="form-control" id="nama" name="nama" required="required" aria-describedby="namaHelp"
+                            placeholder="Masukkan Nama Mahasiswa" <?php if($namaResult!="") echo 'value="'.$namaResult.'"';?>
+                        <small id="namaHelp" class="form-text text-muted">Nama Mahasiswa.</small>
+                        </div>
+                        <div class="form-group" id="simple-date2">
+                            <label for="tglLahir">Tanggal Lahir Mahasiswa</label>
+                            <div class="input-group date">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                </div>
+                                <input type="text" class="form-control" required="required" <?php if($tglLahirResult!="") echo 'value="'.$tglLahirResult.'"';?> id="tglLahir" name="tglLahir">
                             </div>
                         </div>
+                        <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+                            placeholder="Masukkan email" <?php if($emailResult!="") echo 'value="'.$emailResult.'"';?>>
+                        <small id="emailHelp" class="form-text text-muted">Masukkan Email Mahasiswa.</small>
                         </div>
-                    </div>
+                        <div class="form-group">
+                        <label for="exampleInputPassword1">IPK Mahasiswa</label>
+                        <input type="number" class="form-control" id="ipk" name="ipk" step=".001" required="required" placeholder="Masukkan IPK Mahasiswa" <?php if($ipkResult!="") echo 'value="'.$ipkResult.'"';?>>
+                        </div>
+                        <div class="form-group">
+                            <label for="select2SinglePlaceholder">Pilih Program Studi Mahasiswa</label>
 
-                    <?php } ?>
-                    </tbody>
-                  </table>
+                            <select class="select2-single-placeholder form-control" name="idProdi" required="required" id="idProdi">
+                                <option value="">Select</option>
+                            <?php
+                            $stmt2 = $conn->prepare("SELECT * FROM prodi");
+                            $stmt2->execute();
+                            $res2 = $stmt2->get_result();
+                            while($row2=$res2->fetch_assoc()) {
+                            ?>
+                                <option value="<?=$row2['IdProdi']?>" <?php if($row2['IdProdi'] == $idProdiResult) echo 'selected';?>><?=$row2['Nama']?></option>
+                            <?php } ?>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
               </div>
             </div>
+
           </div>
           <!--Row-->
 
+          <!-- Documentation Link -->
+          <div class="row">
+            <div class="col-lg-12 text-center">
+              <p>For more documentations you can visit<a href="https://getbootstrap.com/docs/4.3/components/forms/"
+                  target="_blank">
+                  bootstrap forms documentations.</a> and <a
+                  href="https://getbootstrap.com/docs/4.3/components/input-group/" target="_blank">bootstrap input
+                  groups documentations</a></p>
+            </div>
+          </div>
 
           <!-- Modal Logout -->
           <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
@@ -250,17 +278,15 @@
             </div>
           </div>
 
-
         </div>
         <!---Container Fluid-->
       </div>
-
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a href="https://github.com/niatania102" target="_blank">Tania S Lapalelo</a></b>
+              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
             </span>
           </div>
         </div>
@@ -278,18 +304,17 @@
   <script src="../template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../template/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="../template/js/ruang-admin.min.js"></script>
-  <!-- Page level plugins -->
-  <script src="../template/vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="../template/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-  <!-- Page level custom scripts -->
+  <!-- Bootstrap Datepicker -->
+  <script src="../template/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
   <script>
-    $(document).ready(function () {
-      $('#dataTable').DataTable(); // ID From dataTable
-      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
-    });
+    $('#simple-date2 .input-group.date').datepicker({
+        startView: 1,
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: 'linked',
+      });
   </script>
-
 </body>
 
 </html>
