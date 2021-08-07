@@ -17,13 +17,15 @@ $stmt->execute();
 $res = $stmt->get_result();
 while($row=$res->fetch_assoc()) {
     if(md5($row['Nrp'])==$nrp){
-        $stmt = $conn->prepare("DELETE FROM mahasiswa WHERE Nrp=?");
-        $stmt->bind_param('s', $row['Nrp']);
-        $stmt->execute();
-        echo "<script>
-        alert('Data berhasil dihapus');
-        window.location.href='../mahasiswa/index.php';
-        </script>";
+        // $stmt = $conn->prepare("DELETE FROM mahasiswa WHERE Nrp=?");
+        // $stmt->bind_param('s', $row['Nrp']);
+        // $stmt->execute();
+
+        //work but ain't so pretty
+        // echo "<script>
+        // alert('Data berhasil dihapus');
+        // window.location.href='../mahasiswa/index.php';
+        // </script>";
 
         //did work but somehow can't go to index page
         // echo '<script>
@@ -33,10 +35,26 @@ while($row=$res->fetch_assoc()) {
         //             text: "Data berhasil dihapus!",
         //             type: "success"
         //         }, function() {
-        //             window.location.href="../mahasiswa/index.php";
+        //             window.location.href = "coba.php";
+        //             console.log("The Ok Button was clicked.");
         //         });
         //     }, 1000);
         // </script>';
+
+
+        echo '<script>
+        $(document).ready(function() {
+            swal({
+              title: "Success",
+               text: "Data telah dihapus",
+                type: "success"
+              },
+              function(){
+                window.location.href = "coba.php";
+            });
+            });
+        </script>';
+
         // header('location: ../mahasiswa/index.php');
     }
 }
