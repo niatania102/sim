@@ -1,3 +1,7 @@
+<!-- swwetlaert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script>
+
 <?php
 include "config.php";
 $page = $_GET['page'];
@@ -27,19 +31,38 @@ if($row = $res->fetch_assoc()) {
     $res = $stmt->get_result();
     // print_r($res);
     if($row = $res->fetch_assoc()){
-        if(!empty($row['Nrp']) AND $row['Nrp']!="")$nrp = $row['Nrp']+1;
+        if(!empty($row['Nrp']) AND $row['Nrp']!="" AND $page=='tambah')$nrp = $row['Nrp']+1;
+        else $nrp = $row['Nrp'];
     }
     else $nrp = $prefix.substr($thnTerima,2).'001';
-    // echo $cari.'ok<br>';
-    // echo $nrp;
-    if($page!='ubah')
-    $query = "INSERT INTO mahasiswa VALUES (?,?,?,?,?,?,?)";
-    else $query = "UPDATE mahasiswa SET Nrp=?, ThnTerima=?, Nama=?, TglLahir=?, Email=?, Ipk=?, IdProdi=? WHERE Nrp=?";
+    echo $cari.'ok<br>';
+    echo $nrp;
+    if($page!='ubah') {
+        $query = "INSERT INTO mahasiswa VALUES (?,?,?,?,?,?,?)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('ssssssi', $nrp, $thnTerima, $nama, $tglLahir, $email, $ipk, $idProdi);
+        $stmt->execute();
+    }
+    else {
+        $query = "UPDATE mahasiswa SET Nrp=?, ThnTerima=?, Nama=?, TglLahir=?, Email=?, Ipk=?, IdProdi=? WHERE Nrp=? OR Nama=?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('ssssssiss', $nrp, $thnTerima, $nama, $tglLahir, $email, $ipk, $idProdi, $nrp, $nama);
+        $stmt->execute();
+        //where NRP or name (assuming that there'd be NRP changes for a student if accidently input wrong prodi/thnterima)
+    }
 
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param('ssssssi', $nrp, $thnTerima, $nama, $tglLahir, $email, $ipk, $idProdi);
-    $stmt->execute();
-    echo "Data Berhasil Ditambahkan";
+    // echo "Data Berhasil Ditambah/Diubah";
+    ?>
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Perubahan telah disimpan',
+        showConfirmButton: false,
+        timer: 1500
+    })
+    </script>
+    <?php
+    header('location: ../mahasiswa/index.php');
 }
 
 
