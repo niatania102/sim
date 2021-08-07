@@ -1,6 +1,12 @@
-<!-- swwetlaert -->
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="sweetalert2.all.min.js"></script>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.min.js"></script>
 
 <?php
 include "config.php";
@@ -35,8 +41,8 @@ if($row = $res->fetch_assoc()) {
         else $nrp = $row['Nrp'];
     }
     else $nrp = $prefix.substr($thnTerima,2).'001';
-    echo $cari.'ok<br>';
-    echo $nrp;
+    // echo $cari.'ok<br>';
+    // echo $nrp;
     if($page!='ubah') {
         $query = "INSERT INTO mahasiswa VALUES (?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($query);
@@ -52,17 +58,13 @@ if($row = $res->fetch_assoc()) {
     }
 
     // echo "Data Berhasil Ditambah/Diubah";
-    ?>
-    <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Perubahan telah disimpan',
-        showConfirmButton: false,
-        timer: 1500
-    })
-    </script>
-    <?php
-    header('location: ../mahasiswa/index.php');
+
+    echo "<script>
+    alert('Data berhasil ditambah/diubah');
+    window.location.href='../mahasiswa/index.php';
+    </script>";
+
+    // header('location: ../mahasiswa/index.php');
 }
 
 
