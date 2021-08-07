@@ -60,7 +60,7 @@ if($row = $res->fetch_assoc()) {
     // echo "Data Berhasil Ditambah/Diubah";
 
     echo "<script>
-    alert('Data berhasil ditambah/diubah');
+    alert('Data berhasil di".$page."');
     window.location.href='../mahasiswa/index.php';
     </script>";
 
